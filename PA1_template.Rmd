@@ -33,7 +33,7 @@ STATS <- summarise(group_by(import.data, date),
 )
 ```
 
-```{r}
+```{r, fig.width=8, fig.height=6}
 hist(STATS$sum_steps,
      main="Total number of steps taken each day\nWITH MISSING VALUES",
      xlab="Number of steps",
@@ -57,7 +57,9 @@ kable(STATS, digits=2)
 ```{R}
 STATS2 <- summarise(group_by(import.data, interval),
                     average_steps = mean(steps, na.rm=TRUE))
+```
 
+```{r, fig.width=8, fig.height=6}
 plot(STATS2$interval, STATS2$average_steps, type='l',
      main="Average daily activity pattern",
      xlab="Interval",
@@ -125,7 +127,9 @@ STATS3 <- summarise(group_by(import.data.imputed, date),
                     sum_steps.imputed = sum(steps.imputed, na.rm=TRUE),
                     mean_steps.imputed = mean(steps.imputed, na.rm=TRUE),
                     median_steps.imputed = median(steps.imputed, na.rm = TRUE))
+```
 
+```{r, fig.width=8, fig.height=6}
 hist(STATS3$sum_steps.imputed,
      main="Total number of steps taken each day\nMISSING VALUES IMPUTED",
      xlab="Number of steps",
@@ -158,7 +162,7 @@ import.data.imputed$day[import.data.imputed$day == FALSE] <- "WEEKEND"
 kable(head(import.data.imputed, n=10))
 ```
 
-```{r}
+```{r, fig.width=8, fig.height=6}
 library("lattice")
 xyplot(steps.imputed  ~ interval| day, data=import.data.imputed,
        type = "l",

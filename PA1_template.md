@@ -44,7 +44,7 @@ abline( v = median(STATS$sum_steps), col=2, lty = 2)
 legend("topright", legend = c("Mean", "Median"), col=c(1,2), lty=c(1,2))
 ```
 
-![](PA1_template_files/figure-html/unnamed-chunk-4-1.png)
+![](PA1_template_files/figure-html/unnamed-chunk-4-1.png)\
 
 
 ```r
@@ -124,7 +124,10 @@ date          sum_NA   sum_steps   mean_steps   median_steps
 ```r
 STATS2 <- summarise(group_by(import.data, interval),
                     average_steps = mean(steps, na.rm=TRUE))
+```
 
+
+```r
 plot(STATS2$interval, STATS2$average_steps, type='l',
      main="Average daily activity pattern",
      xlab="Interval",
@@ -133,7 +136,7 @@ plot(STATS2$interval, STATS2$average_steps, type='l',
      xlim=c(0,2500))
 ```
 
-![](PA1_template_files/figure-html/unnamed-chunk-6-1.png)
+![](PA1_template_files/figure-html/unnamed-chunk-7-1.png)\
 
 
 ```r
@@ -284,7 +287,10 @@ STATS3 <- summarise(group_by(import.data.imputed, date),
                     sum_steps.imputed = sum(steps.imputed, na.rm=TRUE),
                     mean_steps.imputed = mean(steps.imputed, na.rm=TRUE),
                     median_steps.imputed = median(steps.imputed, na.rm = TRUE))
+```
 
+
+```r
 hist(STATS3$sum_steps.imputed,
      main="Total number of steps taken each day\nMISSING VALUES IMPUTED",
      xlab="Number of steps",
@@ -298,7 +304,7 @@ abline( v = median(STATS3$sum_steps.imputed), col=2, lty = 2)
 legend("topright", legend = c("Mean", "Median"), col=c(1,2), lty=c(1,2))
 ```
 
-![](PA1_template_files/figure-html/unnamed-chunk-12-1.png)
+![](PA1_template_files/figure-html/unnamed-chunk-14-1.png)\
 
 
 ```r
@@ -418,4 +424,4 @@ xyplot(steps.imputed  ~ interval| day, data=import.data.imputed,
 )
 ```
 
-![](PA1_template_files/figure-html/unnamed-chunk-15-1.png)
+![](PA1_template_files/figure-html/unnamed-chunk-17-1.png)\

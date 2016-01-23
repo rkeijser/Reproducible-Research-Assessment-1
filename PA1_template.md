@@ -49,7 +49,6 @@ legend("topright", legend = c("Mean", "Median"), col=c(1,2), lty=c(1,2))
 
 ```r
 library(knitr)
-#kable(STATS, digits=2)
 STATS
 ```
 
@@ -129,7 +128,6 @@ kable(summary(import.data))
 
 
 ```r
-#kable(STATS[c(1,8,32,35,40,41,45,61),c(1,2)])
 STATS[c(1,8,32,35,40,41,45,61),c(1,2)]
 ```
 
@@ -175,7 +173,6 @@ import.data.imputed <- import.data.imputed[,c(2,5,3,1)]
 
 ```r
 library(knitr)
-#kable(head(import.data.imputed, n=50))
 head(import.data.imputed, n=50)
 ```
 
@@ -266,7 +263,6 @@ legend("topright", legend = c("Mean", "Median"), col=c(1,2), lty=c(1,2))
 
 
 ```r
-#kable(STATS3)
 STATS3
 ```
 
@@ -303,21 +299,22 @@ import.data.imputed$weekend <- isWeekend(import.data.imputed$date, wday = 1:5)
 import.data.imputed$day <- import.data.imputed$weekday
 import.data.imputed$day[import.data.imputed$day == TRUE] <- "WEEKDAY"
 import.data.imputed$day[import.data.imputed$day == FALSE] <- "WEEKEND"
-kable(head(import.data.imputed, n=10))
+head(import.data.imputed, n=10)
 ```
 
-       steps   steps.imputed  date          interval  weekday   weekend   day     
-----  ------  --------------  -----------  ---------  --------  --------  --------
-1         NA       1.7169811  2012-10-01           0  TRUE      FALSE     WEEKDAY 
-63        NA       0.3396226  2012-10-01           5  TRUE      FALSE     WEEKDAY 
-128       NA       0.1320755  2012-10-01          10  TRUE      FALSE     WEEKDAY 
-205       NA       0.1509434  2012-10-01          15  TRUE      FALSE     WEEKDAY 
-264       NA       0.0754717  2012-10-01          20  TRUE      FALSE     WEEKDAY 
-327       NA       2.0943396  2012-10-01          25  TRUE      FALSE     WEEKDAY 
-376       NA       0.5283019  2012-10-01          30  TRUE      FALSE     WEEKDAY 
-481       NA       0.8679245  2012-10-01          35  TRUE      FALSE     WEEKDAY 
-495       NA       0.0000000  2012-10-01          40  TRUE      FALSE     WEEKDAY 
-552       NA       1.4716981  2012-10-01          45  TRUE      FALSE     WEEKDAY 
+```
+##     steps steps.imputed       date interval weekday weekend     day
+## 1      NA     1.7169811 2012-10-01        0    TRUE   FALSE WEEKDAY
+## 63     NA     0.3396226 2012-10-01        5    TRUE   FALSE WEEKDAY
+## 128    NA     0.1320755 2012-10-01       10    TRUE   FALSE WEEKDAY
+## 205    NA     0.1509434 2012-10-01       15    TRUE   FALSE WEEKDAY
+## 264    NA     0.0754717 2012-10-01       20    TRUE   FALSE WEEKDAY
+## 327    NA     2.0943396 2012-10-01       25    TRUE   FALSE WEEKDAY
+## 376    NA     0.5283019 2012-10-01       30    TRUE   FALSE WEEKDAY
+## 481    NA     0.8679245 2012-10-01       35    TRUE   FALSE WEEKDAY
+## 495    NA     0.0000000 2012-10-01       40    TRUE   FALSE WEEKDAY
+## 552    NA     1.4716981 2012-10-01       45    TRUE   FALSE WEEKDAY
+```
 
 
 ```r

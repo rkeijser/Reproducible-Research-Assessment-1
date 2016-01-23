@@ -1,25 +1,176 @@
 ---
 title: "Reproducible Research: Peer Assessment 1"
+author: "Remco Keijser - JAN-2016"
+keep_md: true
 output: 
-  html_document:
-    keep_md: true
+  html_document: 
+    keep_md: yes
 ---
 
 
 ## Loading and preprocessing the data
+```{r}
+import.data <- read.csv(file="activity.csv", header=TRUE)
+import.data$date <- as.Date(as.character(import.data$date, format = "%Y/%m/%d"))
+```
 
+```{r}
+# INSTALL PACKAGES
+# install.packages("dplyr")             # Install dplyr package
+# install.packages("timeDate")          # Install timeDate package
+# install.packages("lattice")           # Install lattice package
 
+```
 
 ## What is mean total number of steps taken per day?
+```{r, message=F, warning=F}
+library("dplyr")
+STATS <- summarise(group_by(import.data, date),
+                   sum_NA = sum(is.na(steps)),
+                   sum_steps = sum(steps, na.rm=TRUE),
+                   mean_steps = mean(steps, na.rm=TRUE),
+                   median_steps = median(steps, na.rm = TRUE)
+)
+```
 
+```{r}
+hist(STATS$sum_steps,
+     main="Total number of steps taken each day\nWITH MISSING VALUES",
+     xlab="Number of steps",
+     border="black",
+     col="grey",
+     xlim=c(0,25000),
+     las=1,
+     breaks=5)
+abline( v = mean(STATS$sum_steps), col=1, lty = 1)
+abline( v = median(STATS$sum_steps), col=2, lty = 2)
+legend("topright", legend = c("Mean", "Median"), col=c(1,2), lty=c(1,2))
+```
 
+```{r}
+library(knitr)
+kable(STATS, digits=2)
+```
 
 ## What is the average daily activity pattern?
 
+```{R}
+STATS2 <- summarise(group_by(import.data, interval),
+                    average_steps = mean(steps, na.rm=TRUE))
 
+plot(STATS2$interval, STATS2$average_steps, type='l',
+     main="Average daily activity pattern",
+     xlab="Interval",
+     ylab="Total Steps",
+     col="blue",
+     xlim=c(0,2500))
+```
+
+```{R}
+max_steps <- max(STATS2$average_steps)
+max_interval <- STATS2[STATS2$average_steps==max_steps,]
+max_interval
+```
+#### **Interval 835 contains the maximum number of steps.**
 
 ## Imputing missing values
 
+```{r}
+library(knitr)
+kable(summary(import.data))
+```  
 
+#### **In total 2304 missing values in variable steps. 8 days are missing step values**
+
+```{r}
+kable(STATS[c(1,8,32,35,40,41,45,61),c(1,2)])
+```
+
+#### **Stratergy chosen to impute missing values: use the mean for that 5-minute interval.**
+
+```{r}
+import.data.imputed <- merge(import.data, STATS2, by.x = "interval", by.y = "interval")
+import.data.imputed <- import.data.imputed[order(as.Date(import.data.imputed$date, format="%d/%m/%Y")),]
+import.data.imputed$steps.imputed <- NA
+
+for(i in 1:length(import.data.imputed$steps)){
+        
+        if(is.na(import.data.imputed[i,2])) {
+                
+                import.data.imputed[i,5] <- import.data.imputed[i,4]
+        }
+        
+        if(!is.na(import.data.imputed[i,2])) {
+                
+                import.data.imputed[i,5] <- import.data.imputed[i,2]
+        }
+}
+
+import.data.imputed <- import.data.imputed[,c(2,5,3,1)]
+```
+
+```{r}
+library(knitr)
+kable(head(import.data.imputed, n=50))
+```
+
+```{r}
+STATS3 <- summarise(group_by(import.data.imputed, date),
+                    sum_NA = sum(is.na(steps)),
+                    sum_NA.imputed = sum(is.na(steps.imputed)),
+                    sum_steps = sum(steps, na.rm=TRUE),
+                    mean_steps = mean(steps, na.rm=TRUE),
+                    median_steps = median(steps, na.rm = TRUE),
+                    
+                    sum_steps.imputed = sum(steps.imputed, na.rm=TRUE),
+                    mean_steps.imputed = mean(steps.imputed, na.rm=TRUE),
+                    median_steps.imputed = median(steps.imputed, na.rm = TRUE))
+
+hist(STATS3$sum_steps.imputed,
+     main="Total number of steps taken each day\nMISSING VALUES IMPUTED",
+     xlab="Number of steps",
+     border="black",
+     col="grey",
+     xlim=c(0,25000),
+     las=1,
+     breaks=5)
+abline( v = mean(STATS3$sum_steps.imputed), col=1, lty = 1)
+abline( v = median(STATS3$sum_steps.imputed), col=2, lty = 2)
+legend("topright", legend = c("Mean", "Median"), col=c(1,2), lty=c(1,2))
+```
+
+```{r}
+kable(STATS3)
+```
+
+#### **The mean and median differ of the imputed day.**
+#### **As shown in the two histograms the mean and the median also changes slighly of the sum of the steps across al days**
 
 ## Are there differences in activity patterns between weekdays and weekends?
+
+```{r}
+library("timeDate")
+import.data.imputed$weekday <- isWeekday(import.data.imputed$date, wday = 1:5)
+import.data.imputed$weekend <- isWeekend(import.data.imputed$date, wday = 1:5)
+import.data.imputed$day <- import.data.imputed$weekday
+import.data.imputed$day[import.data.imputed$day == TRUE] <- "WEEKDAY"
+import.data.imputed$day[import.data.imputed$day == FALSE] <- "WEEKEND"
+kable(head(import.data.imputed, n=10))
+```
+
+```{r}
+library("lattice")
+xyplot(steps.imputed  ~ interval| day, data=import.data.imputed,
+       type = "l",
+       layout = c(1, 2),
+       par.strip.text=list(cex=0.8),
+       xlab = "Interval",
+       ylab=list(
+               label="Number of steps",
+               cex=1),
+       main=list(
+               label="Interval vs number of steps",
+               cex=1),
+       scales=list(cex=0.8)
+)
+```

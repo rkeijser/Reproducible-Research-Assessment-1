@@ -49,7 +49,7 @@ legend("topright", legend = c("Mean", "Median"), col=c(1,2), lty=c(1,2))
 
 ```r
 library(knitr)
-STATS
+head(STATS, n=61)
 ```
 
 ```
@@ -263,7 +263,7 @@ legend("topright", legend = c("Mean", "Median"), col=c(1,2), lty=c(1,2))
 
 
 ```r
-STATS3
+head(STATS3, n=61)
 ```
 
 ```
@@ -286,7 +286,7 @@ STATS3
 ##   median_steps.imputed (dbl)
 ```
 
-#### **The mean and median differ of the imputed day.**
+#### **The mean and median differ of the imputed days.**
 #### **As shown in the two histograms the mean and the median also changes slighly of the sum of the steps across al days**
 
 ## Are there differences in activity patterns between weekdays and weekends?

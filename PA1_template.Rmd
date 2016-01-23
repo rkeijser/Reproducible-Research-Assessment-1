@@ -49,7 +49,8 @@ legend("topright", legend = c("Mean", "Median"), col=c(1,2), lty=c(1,2))
 
 ```{r}
 library(knitr)
-kable(STATS, digits=2)
+#kable(STATS, digits=2)
+STATS
 ```
 
 ## What is the average daily activity pattern?
@@ -85,7 +86,8 @@ kable(summary(import.data))
 #### **In total 2304 missing values in variable steps. 8 days are missing step values**
 
 ```{r}
-kable(STATS[c(1,8,32,35,40,41,45,61),c(1,2)])
+#kable(STATS[c(1,8,32,35,40,41,45,61),c(1,2)])
+STATS[c(1,8,32,35,40,41,45,61),c(1,2)]
 ```
 
 #### **Stratergy chosen to impute missing values: use the mean for that 5-minute interval.**
@@ -113,7 +115,8 @@ import.data.imputed <- import.data.imputed[,c(2,5,3,1)]
 
 ```{r}
 library(knitr)
-kable(head(import.data.imputed, n=50))
+#kable(head(import.data.imputed, n=50))
+head(import.data.imputed, n=50)
 ```
 
 ```{r}
@@ -144,7 +147,8 @@ legend("topright", legend = c("Mean", "Median"), col=c(1,2), lty=c(1,2))
 ```
 
 ```{r}
-kable(STATS3)
+#kable(STATS3)
+STATS3
 ```
 
 #### **The mean and median differ of the imputed day.**
